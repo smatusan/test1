@@ -25,8 +25,19 @@ jobs:
       run: |
         dotnet build WebApplicationTest1 --configuration Release --no-restore
         dotnet build TestProject1 --configuration Release --no-restore
-    - name: Test
-      run: dotnet test TestProject1 --configuration Release --no-build --verbosity normal
+    - name: Test (with coverage threshold)
+      # Use Coverlet integration to enforce a coverage threshold.
+      run: |
+        dotnet test TestProject1 \
+          --configuration Release \
+          --no-build \
+          --verbosity normal \
+          /p:CollectCoverage=true \
+          /p:CoverletOutputFormat=opencover \
+          /p:CoverletOutput=TestProject1/coverage.opencover.xml \
+          /p:Threshold=80 \
+          /p:ThresholdType=line \
+          /p:ThresholdStat=average
     - name: Publish WebApplicationTest1
       run: dotnet publish WebApplicationTest1 --configuration Release --output publish_output      
     # Use the "Configure the .NET appsettings.tmpl.json" action to replace values.
