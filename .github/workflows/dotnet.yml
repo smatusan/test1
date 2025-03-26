@@ -1,0 +1,41 @@
+# This workflow will build a .NET project and deploy WebApplicationTest1 to an IIS application named test1
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build_and_test:
+    runs-on: self-hosted
+
+    steps:
+    - uses: actions/checkout@v4
+    # - name: Setup .NET
+    #   uses: actions/setup-dotnet@v4
+    #   with:
+    #     dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore WebApplicationTest1
+    - name: Build
+      run: |
+        dotnet build WebApplicationTest1 --configuration Release --no-restore
+        dotnet build TestProject1 --configuration Release --no-restore
+    - name: Test
+      run: dotnet test TestProject1 --configuration Release --no-build --verbosity normal
+    - name: Publish WebApplicationTest1
+      run: dotnet publish WebApplicationTest1 --configuration Release --output publish_output
+
+  deploy:
+    runs-on: self-hosted
+    needs: build_and_test
+    steps:
+    - name: Deploy to IIS
+      shell: powershell
+      run: |
+        robocopy publish_output "C:\inetpub\wwwroot\test1" /MIR
+        if ($LASTEXITCODE -lt 8) { exit 0 } else { exit $LASTEXITCODE }
