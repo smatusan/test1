@@ -28,15 +28,15 @@ jobs:
     - name: Test
       run: dotnet test TestProject1 --configuration Release --no-build --verbosity normal
     - name: Publish WebApplicationTest1
-      run: dotnet publish WebApplicationTest1 --configuration Release --output publish_output
+      run: dotnet publish WebApplicationTest1 --configuration Release --output publish_output      
     # Use the "Configure the .NET appsettings.tmpl.json" action to replace values.
     - name: Configure the .NET appsettings
-      uses: benday-inc/edit-dbconnstr-in-appsettings@main
+      uses: benday-inc/set-property-value-in-appsettings@main
       with:
-        pathtosettingsfile: '${{ publish_output }}/appsettings.json'
-        name: "default"
-        connectionstring: "Server=(local); Database=demo123; Trusted_Connection=True;"
-
+        pathtosettingsfile: 'publish_output/appsettings.json'
+        keyname1: 'ConnectionStrings'
+        keyname2: 'DefaultConnection'
+        valuetoset: 'Server=production-server;Database=production-database;Trusted_Connection=True;'
   deploy:
     runs-on: self-hosted
     needs: build_and_test
