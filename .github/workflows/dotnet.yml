@@ -35,5 +35,7 @@ jobs:
     needs: build_and_test
     steps:
     - name: Deploy to IIS
-      run: robocopy publish_output "C:\inetpub\wwwroot\test1" /MIR
       shell: powershell
+      run: |
+        robocopy publish_output "C:\inetpub\wwwroot\test1" /MIR
+        if ($LASTEXITCODE -lt 8) { exit 0 } else { exit $LASTEXITCODE }
