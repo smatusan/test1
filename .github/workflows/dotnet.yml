@@ -31,7 +31,7 @@ jobs:
       run: dotnet publish WebApplicationTest1 --configuration Release --output publish_output
     # Use the "Configure the .NET appsettings.tmpl.json" action to replace values.
     - name: Configure the .NET appsettings
-      uses: hanzcode/configure-the-dotnet-appsettings-tmpl-json@v1.1
+      uses: DEMGroup/dotnet-settings-templator@v1.1.0
       with:
         # Path to the directory or file containing appsettings.json
         path: 'publish_output'
