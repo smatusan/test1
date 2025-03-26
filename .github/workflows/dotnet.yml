@@ -46,7 +46,7 @@ jobs:
         pathtosettingsfile: 'publish_output/appsettings.json'
         keyname1: 'ConnectionStrings'
         keyname2: 'DefaultConnection'
-        valuetoset: 'Server=production-server;Database=production-database;Trusted_Connection=True;'
+        valuetoset: ${{ secrets.CONNECTION_STRING }}
         
   deploy:
     runs-on: self-hosted
