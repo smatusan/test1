@@ -26,4 +26,4 @@ jobs:
         dotnet build WebApplicationTest1 --configuration Release --no-restore
         dotnet build TestProject1 --configuration Release --no-restore
     - name: Test
-      run: dotnet test TestProject1 --no-build --verbosity normal
+      run: dotnet test TestProject1  --configuration Release --no-build --verbosity normal
