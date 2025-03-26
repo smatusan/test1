@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, LAPTOP-G253NDL4]
+    runs-on: self-hosted
 
     steps:
     - uses: actions/checkout@v4
