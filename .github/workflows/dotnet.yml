@@ -29,6 +29,16 @@ jobs:
       run: dotnet test TestProject1 --configuration Release --no-build --verbosity normal
     - name: Publish WebApplicationTest1
       run: dotnet publish WebApplicationTest1 --configuration Release --output publish_output
+    # Use the "Configure the .NET appsettings.tmpl.json" action to replace values.
+    - name: Configure the .NET appsettings
+      uses: hanzcode/configure-the-dotnet-appsettings-tmpl-json@v1.1
+      with:
+        # Path to the directory or file containing appsettings.json
+        path: 'publish_output'
+      env:
+        # The action transforms environment variable names with double underscores
+        # into hierarchical JSON paths. Here you set DefaultConnection to "Test123".
+        connectionstrings__DefaultConnection: 'Server=production-server;Database=MyDatabaseProd;Trusted_Connection=True;'
 
   deploy:
     runs-on: self-hosted
